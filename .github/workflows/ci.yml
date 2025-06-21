@@ -23,7 +23,7 @@ jobs:
           uv pip install -r uv.lock --system
       - name: Install ruff
         run: |
-          uv pip install ruff
+          uv pip install ruff --system
       - name: Lint with ruff
         run: |
           ruff check msg tests
