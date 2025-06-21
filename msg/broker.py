@@ -2,10 +2,10 @@ import asyncio
 import logging
 import os
 from collections import defaultdict, deque
-from .protocol import parse_message, encode_message, make_ack, make_error, generate_message_id
-from .monitoring import log_queue_status
-from .utils import setup_logging
-from .persistence import save_messages, load_messages, DATA_DIR
+from msg.protocol import parse_message, encode_message, make_ack, make_error, generate_message_id
+from msg.monitoring import log_queue_status
+from msg.utils import setup_logging
+from msg.persistence import save_messages, load_messages, DATA_DIR
 
 class SimpleMessageBroker:
     """
@@ -199,14 +199,3 @@ class SimpleMessageBroker:
         ptp_status = {topic: len(self.ptp_queues[topic]) for topic in self.ptp_queues}
         log_queue_status({'pubsub': status, 'queue': ptp_status})
         return {'pubsub': status, 'queue': ptp_status}
-
-# Entrypoint for running the broker
-# Deprecated: Use `python -m msg.broker` or `python -m msg` instead.
-if __name__ == "__main__":
-    import warnings
-    warnings.warn(
-        "Direct execution of msg/broker.py is deprecated. Use 'python -m msg' or 'python -m msg.broker' instead.",
-        DeprecationWarning
-    )
-    from .__main__ import main as _main
-    _main()
