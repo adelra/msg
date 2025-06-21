@@ -17,14 +17,15 @@ def test_save_and_load_pubsub_messages():
     topic = 'testtopic'
     messages = [("msg1", "id1"), ("msg2", "id2")]
     persistence.save_messages(topic, messages, mode='pubsub')
-    loaded = persistence.load_messages(topic, mode='pubsub')
+    loaded = [tuple(msg) for msg in persistence.load_messages(topic, mode='pubsub')]
     assert loaded == messages
+
 
 def test_save_and_load_queue_messages():
     topic = 'testqueue'
     messages = [("qmsg1", "qid1"), ("qmsg2", "qid2")]
     persistence.save_messages(topic, messages, mode='queue')
-    loaded = persistence.load_messages(topic, mode='queue')
+    loaded = [tuple(msg) for msg in persistence.load_messages(topic, mode='queue')]
     assert loaded == messages
 
 def test_delete_messages():
