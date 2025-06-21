@@ -21,3 +21,12 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["msg"]
+
+[tool.ruff]
+line-length = 100
+exclude = [".venv", "build", "dist"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
