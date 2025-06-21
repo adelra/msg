@@ -20,7 +20,7 @@ jobs:
           pip install uv
       - name: Install dependencies with uv
         run: |
-          uv pip install -r uv.lock || uv pip install .
+          uv pip install -r uv.lock --system
       - name: Install ruff
         run: |
           uv pip install ruff
