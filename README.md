@@ -151,6 +151,21 @@ All communication is via JSON messages over TCP sockets.
   - Deleting messages.
 
 ---
+## Current bugs
+
+   * Unbounded Memory Usage: The ptp_queues (point-to-point queues) are implemented using collections.deque, which can grow indefinitely if there are no consumers, leading to a potential memory exhaustion issue.
+   * No Acknowledgment for PTP Queues: In notify_ptp_consumer, a message is removed from the queue as soon as it is sent to a consumer, without waiting for an acknowledgment. If the consumer crashes before processing
+     the message, the message is lost.
+   * Inefficient Message Delivery to New Subscribers: When a new subscriber connects to a pub/sub topic, it receives all the messages currently in the queue for that topic. This is done by iterating over a copy of the
+     queue, which can be inefficient for large queues.
+   * Potential Race Condition in PTP Queues: In notify_ptp_consumer, the code checks if there are messages in the queue and if there are consumers, and then proceeds to send the message. However, there is a potential
+     race condition where a consumer could disconnect between the check and the send call, which would result in an error.
+   * No Error Handling for `writer.drain()`: The code does not handle potential errors that can occur during writer.drain(), which can lead to unhandled exceptions and connection termination.
+   * Blocking File I/O: The save_messages and load_messages functions perform blocking file I/O, which can block the entire event loop and degrade performance. These operations should be run in a separate thread or
+     using an asynchronous file I/O library.
+
+---
+
 
 ## Contributing
 - Fork, branch, and submit pull requests.
